@@ -4,4 +4,17 @@ interface USER extends mongoose.Document {
     email: string;
     name: string;
     password: string;
+    verificationToken?: string | null;
+    verificationTokenExpire?: Date | null;
+    resetPasswordToken?: string;
+    resetPasswordTokenExpire?: Date | null;
+    refreshToken?: string;
+    isPasswordCorrect: (password: string) => Promise<boolean>;
+    generateAccessToken(): string;
+    generateRefreshToken(): string;
+    generateTempToken(): {
+        unHashedToken: string;
+        hasedToken: string;
+        tokenExpiry: Date;
+    };
 };
