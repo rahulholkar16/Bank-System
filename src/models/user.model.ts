@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import type { USER } from "../types/index.js";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import jwt, { type SignOptions } from "jsonwebtoken";
 
 const userSchma = new mongoose.Schema<USER>({
     email: { type: String, required: true, unique: true },
@@ -20,12 +20,12 @@ userSchma.methods.isPasswordCorrect = async function (password: string) {
 };
 
 userSchma.methods.generateAccessToken = async function () {
-    return jwt.sing(
+    return jwt.sign(
         {
             _id: this._id,
         }, 
-        process.env.ACCESS_JWT_SECRET,
-        
+        process.env.ACCESS_JWT_SECRET!,
+        { expiresIn: process.env.ACCESS_TOKEN_EXPIRY } as SignOptions
     )
 };
 
