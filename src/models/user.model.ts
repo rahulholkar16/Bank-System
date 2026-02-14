@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import type { USER } from "../types/index.js";
 import bcrypt from "bcrypt";
 import jwt, { type SignOptions } from "jsonwebtoken";
+import crypto from "crypto";
 
 const userSchma = new mongoose.Schema<USER>({
     email: { type: String, required: true, unique: true },
@@ -40,6 +41,14 @@ userSchma.methods.generateRefreshToken = async function () {
     )
 };
 
-
+userSchma.methods.generateTempToken = async function () {
+    const unHashedToken = crypto.randomBytes(20).toString("hex");
+    const hasedToken = crypto
+        .createHash("sha256")
+        .update(unHashedToken)
+        .digest("hex");
+    const tokenExpiry = Date.now() + (10 * 60 * 1000);
+    return { unHashedToken, hasedToken, tokenExpiry };
+};
 
 export const UserModel = mongoose.models.USER as mongoose.Model<USER> || mongoose.model<USER>("USER", userSchma);
