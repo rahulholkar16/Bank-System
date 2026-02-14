@@ -7,7 +7,13 @@ import crypto from "crypto";
 const userSchma = new mongoose.Schema<USER>({
     email: { type: String, required: true, unique: true },
     name: { type: String, required: true, trim: true },
-    password: { type: String, required: true, select: false }
+    password: { type: String, required: true, select: false },
+    isVerified: { type: Boolean, default: false },
+    verificationToken: { type: String, },
+    verificationTokenExpire: { type: Date },
+    refreshToken: { type: String, select: false },
+    resetPasswordToken: { type: String },
+    resetPasswordTokenExpire: { type: Date }
 }, { timestamps: true });
 
 userSchma.pre("save", async function () {

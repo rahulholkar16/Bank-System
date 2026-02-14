@@ -4,6 +4,7 @@ interface USER extends mongoose.Document {
     email: string;
     name: string;
     password: string;
+    isVerified: boolean;
     verificationToken?: string | null;
     verificationTokenExpire?: Date | null;
     resetPasswordToken?: string;
