@@ -29,4 +29,17 @@ userSchma.methods.generateAccessToken = async function () {
     )
 };
 
+userSchma.methods.generateRefreshToken = async function () {
+    return jwt.sign(
+        {
+            _id: this._id,
+            email: this.email,
+        },
+        process.env.REFRESH_JWT_SECRET!,
+        { expiresIn: process.env.REFRESH_TOKEN_EXPIRY } as SignOptions
+    )
+};
+
+
+
 export const UserModel = mongoose.models.USER as mongoose.Model<USER> || mongoose.model<USER>("USER", userSchma);
