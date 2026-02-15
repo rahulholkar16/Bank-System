@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import { errorHandler } from "./middlewares/error.middleware.js";
 
 const app = express();
 app.use(express.json({ limit: "16kb" }));
@@ -16,4 +17,5 @@ app.get('/', (req, res) => {
     })
 });
 
+app.use(errorHandler);
 export default app;
