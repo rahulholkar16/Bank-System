@@ -50,10 +50,8 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
 
 export const login = asyncHandler(async (req: Request, res: Response) => {
     const { email, password } = req.body;
-    if (!email || !password)
-        throw new ApiError(401, "Email and Password required.");
-
-    const user = await UserModel.findOne({ email });
+    if (!email || !password) throw new ApiError(401, "Email and Password required.");
+    const user = await UserModel.findOne({ email }).select("+password");
     if (!user) throw new ApiError(404, "User not found!");
 
     const isPasswordValid = await user.isPasswordCorrect(password);
@@ -97,4 +95,3 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
             )
         );
 });
-
