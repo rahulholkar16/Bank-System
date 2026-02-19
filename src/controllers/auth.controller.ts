@@ -69,14 +69,14 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
         httpOnly: true,
         secure: false,
         maxAge: 24 * 60 * 60 * 1000,
-        sameSite: "none"
+        sameSite: "lax"
     };
 
     const refreshCookieOptions: CookieOptions = {
         httpOnly: true,
         secure: false,
         maxAge: 10 * 24 * 60 * 60 * 1000,
-        sameSite: "none"
+        sameSite: "lax"
     };
 
     return res
